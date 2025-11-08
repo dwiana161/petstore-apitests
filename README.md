@@ -5,17 +5,23 @@ This repository contains a Postman collection and environment for testing APIs u
 The collection and environment are stored in this repo, so you can run tests directly from GitHub.
 
 ---
+## Clone the Repository
+
+First, clone this repository to your local machine:
+```
+git clone https://github.com/dwiana161/petstore-apitests.git
+```
 
 ## Prerequisites
 
 Make sure your system has:
 
-- [Node.js](v14+)
+- [Node.js] (v14+)
 - [npm]
 - [Newman]
 
 Install Newman globally:
-```bash
+```
 npm install -g newman
 ```
 
