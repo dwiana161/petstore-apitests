@@ -39,6 +39,17 @@
 						"packages": {},
 						"requests": {}
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
 				}
 			],
 			"request": {
@@ -46,7 +57,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"id\": 8,\n  \"category\": {\n    \"id\": 1,\n    \"name\": \"cat\"\n  },\n  \"name\": \"Cannie\",\n  \"photoUrls\": [\n    \"Cannie.jpg\"\n  ],\n  \"tags\": [\n    {\n      \"id\": 1,\n      \"name\": \"cat\"\n    }\n  ],\n  \"status\": \"pending\"\n}",
+					"raw": "{\n  \"id\": 18,\n  \"category\": {\n    \"id\": 1,\n    \"name\": \"cat\"\n  },\n  \"name\": \"Cannie\",\n  \"photoUrls\": [\n    \"Cannie.jpg\"\n  ],\n  \"tags\": [\n    {\n      \"id\": 1,\n      \"name\": \"cat\"\n    }\n  ],\n  \"status\": \"pending\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -226,6 +237,102 @@
 					]
 				},
 				"description": "Upload an image pet\n\nRequest Body:\n\n- petId (integer, required): ID of pet to update\n    \n- additionalMetadata (string, optional): Additional data to pass to server\n    \n- file (array of strings, required): file to upload"
+			},
+			"response": []
+		},
+		{
+			"name": "Find pet by ID (Negative Case)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Message contains pet not found\", function () {",
+							"    pm.expect(jsonData.message).to.include(\"Pet not found\");",
+							"});",
+							"",
+							"pm.test(\"type is error\", function () {",
+							"    pm.expect(jsonData.type).to.eql(\"error\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/pet/200",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"pet",
+						"200"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add a new pet (Negative Case)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Message contains Bad input\", function () {",
+							"    pm.expect(jsonData.message).to.include(\"bad input\");",
+							"});",
+							"",
+							"pm.test(\"type is unknown\", function () {",
+							"    pm.expect(jsonData.type).to.eql(\"unknown\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": 2,\n  \"name\": 1as,\n  \"photoUrls\": [\n    \"kitty\"\n  ],\n  \"tags\": [\n    {\n      \"id\": 1,\n      \"name\": \"cat\"\n    }\n  ],\n  \"status\": \"available\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/pet",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"pet"
+					]
+				}
 			},
 			"response": []
 		}
