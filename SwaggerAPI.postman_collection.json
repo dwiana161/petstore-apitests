@@ -1,0 +1,257 @@
+{
+	"info": {
+		"_postman_id": "4b5e677e-c533-4c32-b6ba-dfe03ec15b07",
+		"name": "SwaggerAPI",
+		"description": "Petstore API Collection\n\nThis is a sample server Petstore server. The collection contains endpoints to manage pets",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27543819"
+	},
+	"item": [
+		{
+			"name": "Add a new pet to the store",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Check if name is true\", function () {",
+							"    pm.expect(jsonData.name).to.eql(\"Cannie\");",
+							"});",
+							"",
+							"pm.test(\"Check if status is true\", function () {",
+							"    pm.expect(jsonData.status).to.eql(\"pending\");",
+							"});",
+							"",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Cannie.jpg\");",
+							"});",
+							"",
+							"pm.environment.set(\"petId\", jsonData.id)",
+							"pm.environment.set(\"status\", jsonData.status)"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": 8,\n  \"category\": {\n    \"id\": 1,\n    \"name\": \"cat\"\n  },\n  \"name\": \"Cannie\",\n  \"photoUrls\": [\n    \"Cannie.jpg\"\n  ],\n  \"tags\": [\n    {\n      \"id\": 1,\n      \"name\": \"cat\"\n    }\n  ],\n  \"status\": \"pending\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/pet",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"pet"
+					]
+				},
+				"description": "Add a new pet to the store.\n\nRequest Body:\n\n- name (string, required): Name of the pet\n    \n- category (string, optional): Category of the pet (e.g., dog, cat)\n    \n- photoUrls (array of strings, optional): URLs of pet photos\n    \n- tags (array of strings, optional): Tags associated with the pet\n    \n- status (string, optional): Pet status in the store (available, pending, sold)"
+			},
+			"response": []
+		},
+		{
+			"name": "Find pet by Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Cannie.jpg\");",
+							"});",
+							"",
+							"pm.test(\"Check if status is pending\", function () {",
+							"    pm.expect(jsonData.status).to.eql(\"pending\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/pet/{{petId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"pet",
+						"{{petId}}"
+					]
+				},
+				"description": "Find a pet in the store by its ID.\n\nPath Parameter:\n\n- petId (integer, required): ID of the pet to retrieve\n    \n\nDescription:\n\n- This request retrieves a single pet based on its unique ID.\n    \n- Returns detailed information about the pet, including name, category, photo URLs, tags, and status."
+			},
+			"response": []
+		},
+		{
+			"name": "Find pets by status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Check if all status is pending\", function () {",
+							"    jsonData.forEach(function(item) {",
+							"        pm.expect(item.status).to.eql(\"pending\");",
+							"    })",
+							"});",
+							"",
+							"pm.test(\"Check if there's a name that matches 'Cannie'\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Cannie\");",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/pet/findByStatus?status={{status}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"pet",
+						"findByStatus"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "{{status}}"
+						}
+					]
+				},
+				"description": "Find pets By Status\n\nPath Parameter:\n\n- status (string): status of the pet to retrieve\n    \n\nDescription:\n\n- This request retrieves all pet based on status.\n    \n- Returns detailed information about the pet, including name, category, photo URLs, tags, and status."
+			},
+			"response": []
+		},
+		{
+			"name": "Upload an image",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Message contains correct upload format\", function () {",
+							"    pm.expect(jsonData.message).to.include(\".jpeg\");",
+							"});",
+							"",
+							"pm.test(\"Body code is 200\", function () {",
+							"    pm.expect(jsonData.code).to.eql(200);",
+							"});",
+							"",
+							"pm.test(\"Message contains 'File uploaded'\", function () {",
+							"    pm.expect(jsonData.message).to.include('File uploaded');",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "additionalMetadata",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/dwianakas/Downloads/rabbit.jpeg"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/pet/{{petId}}/uploadImage",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"pet",
+						"{{petId}}",
+						"uploadImage"
+					]
+				},
+				"description": "Upload an image pet\n\nRequest Body:\n\n- petId (integer, required): ID of pet to update\n    \n- additionalMetadata (string, optional): Additional data to pass to server\n    \n- file (array of strings, required): file to upload"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
