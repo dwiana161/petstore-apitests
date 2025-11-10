@@ -21,8 +21,8 @@ Make sure your system has:
 - [Newman]
 
 Second, open the folder in VSCode.
-Third, Make sure to add the rabbit.jpeg image file to your local project folder before running any tests. And Copy the full image path of the file.
 
+Third, Make sure to add the rabbit.jpeg image file to your local project folder before running any tests. And Copy the full image path of the file.
 
 Install Newman globally:
 ```
