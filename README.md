@@ -20,6 +20,8 @@ Make sure your system has:
 - [npm]
 - [Newman]
 
+Second, open the folder in VSCode
+
 Install Newman globally:
 ```
 npm install -g newman
